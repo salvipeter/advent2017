@@ -43,7 +43,7 @@ fun readData' fname =
     end
 
 fun xor (a, b) =
-    IntInf.toInt (IntInf.xorb (IntInf.fromInt a, IntInf.fromInt b))
+    Word.toInt (Word.xorb (Word.fromInt a, Word.fromInt b))
 
 fun denseHash [] = []
   | denseHash xs =
@@ -54,10 +54,12 @@ fun printHex xs =
         fun twoChar s = if size s = 1 then "0" ^ s else s
     in concat (map (toLower o twoChar o Int.fmt StringCvt.HEX) xs) end
 
-fun adv10b () =
-    let val lengths = readData' "adv10.txt" @ [17, 31, 73, 47, 23]
+fun knotHash data =
+    let val lengths = data @ [17, 31, 73, 47, 23]
         val arr = Array.tabulate (256, fn x => x)
     in hash arr lengths lengths 0 0 64
      ; let val list = List.tabulate (256, fn i => Array.sub (arr, i))
        in printHex (denseHash list) end
     end
+
+fun adv10b () = knotHash (readData' "adv10.txt")
