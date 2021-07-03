@@ -57,12 +57,10 @@ fun adv19 () = implode (followTrack (readData "adv19.txt") start (1, 0))
 
 fun countTrack track pos dir =
     if pos = goal then 0
-    else let val c = get track pos
-         in if c = #"+" then
-                let val (pos', dir') = turn track pos dir
-                in 1 + countTrack track pos' dir' end
-            else
-                1 + countTrack track (nextPos pos dir) dir
-         end
+    else if get track pos = #"+" then
+        let val (pos', dir') = turn track pos dir
+        in 1 + countTrack track pos' dir' end
+    else
+        1 + countTrack track (nextPos pos dir) dir
 
 fun adv19b () = countTrack (readData "adv19.txt") start (1, 0)
