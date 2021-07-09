@@ -38,9 +38,7 @@ fun adv20 () = closest (readData "adv20.txt")
 
 (* Second part *)
 
-(* Position after n iterations: p + n * v + n (n + 1) / 2 * a *)
-
-fun add (x, y, z) (dx, dy, dz) = (x + d, y + d, z + d)
+fun add (x, y, z) (dx, dy, dz) = (x + dx, y + dy, z + dz)
 
 fun update (pos, vel, acc) =
     let val vel' = add vel acc
@@ -55,10 +53,8 @@ fun removeCollisions [] = []
        else removeCollisions rest
     end
 
-fun simulate ps = (
-    (print o Int.toString o length) ps
-  ; print "\n"
-  ; (simulate o removeCollisions o map update) ps
-)
+fun simulate 0 ps = length ps
+  | simulate n ps = (simulate (n - 1) o removeCollisions o map update) ps
 
-fun adv20b () = simulate (readData "adv20.txt")
+(* Actually 39 iterations suffice *)
+fun adv20b () = simulate 1000 (readData "adv20.txt")
